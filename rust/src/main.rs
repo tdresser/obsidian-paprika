@@ -6,7 +6,8 @@ mod lib;
 use ::lib::paprika_login;
 use ::lib::list_recipes;
 
-async fn async_main() {
+#[tokio::main]
+async fn main() {
     let stdin = io::stdin();
     let mut username = String::new();
     let mut password = String::new();
@@ -17,8 +18,4 @@ async fn async_main() {
     let token = paprika_login(&username, &password).await;
     println!("Hello world {}", token);
     list_recipes(&token).await;
-}
-
-fn main() {
-    block_on(async_main());
 }
