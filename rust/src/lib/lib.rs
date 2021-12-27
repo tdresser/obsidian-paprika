@@ -1,6 +1,4 @@
-mod utils;
-
-use paprika_api::api;
+use paprika_api::api::{self, Recipe};
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -29,7 +27,7 @@ pub async fn paprika_login(email: &String, password: &String) -> String {
     }
 }
 
-async fn list_recipes(token: &String) {
+pub async fn list_recipes(token: &String) {
     let recipe_list = api::get_recipes(&token).await.unwrap();
 
     for (_, recipe_entry) in recipe_list.iter().enumerate() {
@@ -39,4 +37,8 @@ async fn list_recipes(token: &String) {
             Err(e) => println!("Error fetching recipe {}: {}", recipe_entry.uid, e),
         }
     }
+}
+
+pub async fn get_markdown(recipe: Recipe) {
+
 }
