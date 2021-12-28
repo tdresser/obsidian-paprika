@@ -31,7 +31,6 @@ pub fn get_markdown(
     let categories_value = serde_json::to_value(category_strings).unwrap();
     
     if let Value::Object(o) = &mut recipe_value {
-        println!("DOING IT!");
         o.insert("categories".to_string(), categories_value);
     }
 
