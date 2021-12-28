@@ -3,6 +3,10 @@ uid: {{uid}}
 hash: {{hash}}
 rating: {{rating}}
 created: {{created}}
+categories:
+{{#each categories}}
+  - {{this}}
+{{/each}}
 ---
 
 # {{name}}

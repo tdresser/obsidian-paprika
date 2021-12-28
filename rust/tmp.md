@@ -1,7 +1,11 @@
 ---
+uid: 005C313B-EFD3-496A-B0DE-92E9075D55F5
 hash: CE77B03E695616F4E826BB4B5D6E6E3983559D32A192838BEBC8E7C2318301E6
 rating: 5
 created: 2020-11-20 19:04:35
+categories:
+  - B42ACD62-61FD-4B75-98DB-1374D16AE053
+  - D10649B6-3C40-41E9-9477-31457EA231B2
 ---
 
 # Good Old Fashioned Pancakes
@@ -11,6 +15,7 @@ Via [Allrecipes.com](https://www.allrecipes.com/recipe/21014/good-old-fashioned-
 ![photo](http://s3.amazonaws.com/uploads.paprikaapp.com/423163/2F9F569A-DC93-40D6-A32C-09F46A66C761.jpg?AWSAccessKeyId&#x3D;AKIAQ656ARCHKEP3RMYH&amp;Expires&#x3D;1640704434&amp;Signature&#x3D;ctvsls6HEy3DOWxVkdI7hHLhLu0%3D)
 
 ## Description
+    Servings: 8
 
 ## Ingredients
 - 180g (1 ½ cups) all-purpose flour
