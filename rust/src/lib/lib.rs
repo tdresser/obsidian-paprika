@@ -18,6 +18,7 @@ pub fn greet() {
 }
 
 pub async fn paprika_login(email: &String, password: &String) -> String {
+    println!("{}:{}", email, password);
     let res = api::login(email, password).await;
     match res {
         Ok(t) => {
@@ -40,5 +41,5 @@ pub async fn list_recipes(token: &String) {
 }
 
 pub async fn get_markdown(recipe: Recipe) {
-
+    println!("{}", recipe.name)
 }
