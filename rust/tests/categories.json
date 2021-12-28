@@ -1,0 +1,116 @@
+[
+  {
+    "uid": "7A03172E-01B2-4E22-A9C4-B20E11F31D10",
+    "order_flag": 18,
+    "name": "Indian",
+    "parent_uid": "8DBC315A-8843-4A28-A86D-35CF206EF833"
+  },
+  {
+    "uid": "8DBC315A-8843-4A28-A86D-35CF206EF833",
+    "order_flag": 17,
+    "name": "Ethnicity",
+    "parent_uid": null
+  },
+  {
+    "uid": "E016309F-90EF-49E4-BC89-AD98FC228D8F",
+    "order_flag": 16,
+    "name": "Foraging",
+    "parent_uid": null
+  },
+  {
+    "uid": "7EC47C97-832A-4C01-B251-667B86CBD730",
+    "order_flag": 15,
+    "name": "Preserves",
+    "parent_uid": null
+  },
+  {
+    "uid": "4B6C438C-FE62-4EAF-A888-92B148B1C548",
+    "order_flag": 14,
+    "name": "Gluten Free",
+    "parent_uid": null
+  },
+  {
+    "uid": "ABC97838-1610-4678-A584-0EDC59084349",
+    "order_flag": 13,
+    "name": "Bread",
+    "parent_uid": null
+  },
+  {
+    "uid": "92CE4E80-40F2-47FC-A918-10FB776488D2",
+    "order_flag": 12,
+    "name": "Holiday",
+    "parent_uid": null
+  },
+  {
+    "uid": "8CDD21AE-873E-4665-81EF-82F356C31669",
+    "order_flag": 11,
+    "name": "Export",
+    "parent_uid": null
+  },
+  {
+    "uid": "6DC5018F-2A92-48EF-AD71-ACC84F6AA9E5",
+    "order_flag": 10,
+    "name": "To Try",
+    "parent_uid": null
+  },
+  {
+    "uid": "11698B39-D5C3-4181-A19A-3C856919B4A1",
+    "order_flag": 9,
+    "name": "Staple",
+    "parent_uid": null
+  },
+  {
+    "uid": "C96C8AB2-AE2E-4C8D-A03F-0B71360C7389",
+    "order_flag": 8,
+    "name": "Frozen",
+    "parent_uid": "5995684C-8511-4FB7-BF9D-CE05617137A5"
+  },
+  {
+    "uid": "2A4A3AA6-A5E4-4191-9D97-8F1AD8EC7811",
+    "order_flag": 7,
+    "name": "Beverage",
+    "parent_uid": null
+  },
+  {
+    "uid": "5488B151-0DFA-44FF-B5F4-F91ED7AA6075",
+    "order_flag": 6,
+    "name": "Potluck",
+    "parent_uid": null
+  },
+  {
+    "uid": "3A32F97C-7137-45F6-AA81-DF014B529D8C",
+    "order_flag": 5,
+    "name": "Condiment",
+    "parent_uid": null
+  },
+  {
+    "uid": "D9040D86-9D75-4176-9D64-D16D83769DBA",
+    "order_flag": 4,
+    "name": "Snack",
+    "parent_uid": null
+  },
+  {
+    "uid": "D10649B6-3C40-41E9-9477-31457EA231B2",
+    "order_flag": 3,
+    "name": "Breakfast",
+    "parent_uid": "B42ACD62-61FD-4B75-98DB-1374D16AE053"
+  },
+  {
+    "uid": "A3C3C2E9-C564-4157-BF40-04DEC5E8AC67",
+    "order_flag": 2,
+    "name": "Side",
+    "parent_uid": null
+  },
+  {
+    "uid": "5995684C-8511-4FB7-BF9D-CE05617137A5",
+    "order_flag": 1,
+    "name": "Dessert",
+    "parent_uid": null
+  },
+  {
+    "uid": "B42ACD62-61FD-4B75-98DB-1374D16AE053",
+    "order_flag": 0,
+    "name": "Main",
+    "parent_uid": null
+  }
+]
