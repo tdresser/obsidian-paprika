@@ -1,8 +1,8 @@
 use std::io;
 
 mod lib;
-use ::lib::paprika_login;
-use ::lib::list_recipes;
+use lib::paprika::paprika_login;
+use lib::paprika::list_recipes;
 
 #[tokio::main]
 async fn main() {

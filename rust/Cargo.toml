@@ -8,8 +8,12 @@ edition = "2018"
 name = "main"
 path = "src/main.rs"
 
+[[bin]]
+name = "local"
+path = "src/local.rs"
+
 [lib]
-name = "lib"
+name = "paprika_markdown"
 path = "src/lib/lib.rs"
 crate-type = ["cdylib", "rlib"]
 
