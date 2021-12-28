@@ -1,4 +1,7 @@
+use std::fs;
+
 use paprika_api::api::{self, Recipe};
+use handlebars::Handlebars;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -29,17 +32,25 @@ pub async fn paprika_login(email: &String, password: &String) -> String {
 }
 
 pub async fn list_recipes(token: &String) {
+    let template = &fs::read_to_string("template.md").unwrap();
+
     let recipe_list = api::get_recipes(&token).await.unwrap();
 
     for (_, recipe_entry) in recipe_list.iter().enumerate() {
         let recipe_future = api::get_recipe_by_id(&token, &recipe_entry.uid).await;
         match recipe_future {
-            Ok(recipe) => println!("Recipe: {:?}", recipe),
+            Ok(recipe) => println!("{}", get_markdown(recipe, template)),
             Err(e) => println!("Error fetching recipe {}: {}", recipe_entry.uid, e),
         }
+        break;
     }
 }
 
-pub async fn get_markdown(recipe: Recipe) {
-    println!("{}", recipe.name)
+pub fn get_markdown(recipe: Recipe, template:&String) -> String {
+    let mut handlebars = Handlebars::new();
+    handlebars.set_strict_mode(true);
+
+    assert!(handlebars.register_template_string("template", template).is_ok());
+    return handlebars.render("template", &recipe).unwrap();
+    return format!("{}", recipe.name)
 }
