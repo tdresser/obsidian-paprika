@@ -4691,7 +4691,7 @@ var init_body = __esm({
 import { types as types2 } from "node:util";
 import http from "node:http";
 function fromRawHeaders(headers = []) {
-  return new Headers2(headers.reduce((result, value, index, array) => {
+  return new Headers(headers.reduce((result, value, index, array) => {
     if (index % 2 === 0) {
       result.push(array.slice(index, index + 2));
     }
@@ -4706,7 +4706,7 @@ function fromRawHeaders(headers = []) {
     }
   }));
 }
-var validateHeaderName, validateHeaderValue, Headers2;
+var validateHeaderName, validateHeaderValue, Headers;
 var init_headers = __esm({
   "node_modules/node-fetch/src/headers.js"() {
     validateHeaderName = typeof http.validateHeaderName === "function" ? http.validateHeaderName : (name) => {
@@ -4723,10 +4723,10 @@ var init_headers = __esm({
         throw error;
       }
     };
-    Headers2 = class extends URLSearchParams {
+    Headers = class extends URLSearchParams {
       constructor(init) {
         let result = [];
-        if (init instanceof Headers2) {
+        if (init instanceof Headers) {
           const raw = init.raw();
           for (const [name, values] of Object.entries(raw)) {
             result.push(...values.map((value) => [name, value]));
@@ -4842,7 +4842,7 @@ var init_headers = __esm({
         }, {});
       }
     };
-    Object.defineProperties(Headers2.prototype, ["get", "entries", "forEach", "values"].reduce((result, property) => {
+    Object.defineProperties(Headers.prototype, ["get", "entries", "forEach", "values"].reduce((result, property) => {
       result[property] = { enumerable: true };
       return result;
     }, {}));
@@ -4861,18 +4861,18 @@ var init_is_redirect = __esm({
 });
 
 // node_modules/node-fetch/src/response.js
-var INTERNALS2, Response2;
+var INTERNALS2, Response;
 var init_response = __esm({
   "node_modules/node-fetch/src/response.js"() {
     init_headers();
     init_body();
     init_is_redirect();
     INTERNALS2 = Symbol("Response internals");
-    Response2 = class extends Body {
+    Response = class extends Body {
       constructor(body = null, options = {}) {
         super(body, options);
         const status = options.status != null ? options.status : 200;
-        const headers = new Headers2(options.headers);
+        const headers = new Headers(options.headers);
         if (body !== null && !headers.has("Content-Type")) {
           const contentType = extractContentType(body, this);
           if (contentType) {
@@ -4914,7 +4914,7 @@ var init_response = __esm({
         return this[INTERNALS2].highWaterMark;
       }
       clone() {
-        return new Response2(clone(this, this.highWaterMark), {
+        return new Response(clone(this, this.highWaterMark), {
           type: this.type,
           url: this.url,
           status: this.status,
@@ -4930,7 +4930,7 @@ var init_response = __esm({
         if (!isRedirect(status)) {
           throw new RangeError('Failed to execute "redirect" on "response": Invalid status code');
         }
-        return new Response2(null, {
+        return new Response(null, {
           headers: {
             location: new URL(url).toString()
           },
@@ -4938,7 +4938,7 @@ var init_response = __esm({
         });
       }
       static error() {
-        const response = new Response2(null, { status: 0, statusText: "" });
+        const response = new Response(null, { status: 0, statusText: "" });
         response[INTERNALS2].type = "error";
         return response;
       }
@@ -4946,7 +4946,7 @@ var init_response = __esm({
         return "Response";
       }
     };
-    Object.defineProperties(Response2.prototype, {
+    Object.defineProperties(Response.prototype, {
       type: { enumerable: true },
       url: { enumerable: true },
       status: { enumerable: true },
@@ -5121,7 +5121,7 @@ var init_referrer = __esm({
 
 // node_modules/node-fetch/src/request.js
 import { format as formatUrl } from "node:url";
-var INTERNALS3, isRequest, Request2, getNodeRequestOptions;
+var INTERNALS3, isRequest, Request, getNodeRequestOptions;
 var init_request = __esm({
   "node_modules/node-fetch/src/request.js"() {
     init_headers();
@@ -5133,7 +5133,7 @@ var init_request = __esm({
     isRequest = (object) => {
       return typeof object === "object" && typeof object[INTERNALS3] === "object";
     };
-    Request2 = class extends Body {
+    Request = class extends Body {
       constructor(input, init = {}) {
         let parsedURL;
         if (isRequest(input)) {
@@ -5154,7 +5154,7 @@ var init_request = __esm({
         super(inputBody, {
           size: init.size || input.size || 0
         });
-        const headers = new Headers2(init.headers || input.headers || {});
+        const headers = new Headers(init.headers || input.headers || {});
         if (inputBody !== null && !headers.has("Content-Type")) {
           const contentType = extractContentType(inputBody, this);
           if (contentType) {
@@ -5227,13 +5227,13 @@ var init_request = __esm({
         this[INTERNALS3].referrerPolicy = validateReferrerPolicy(referrerPolicy);
       }
       clone() {
-        return new Request2(this);
+        return new Request(this);
       }
       get [Symbol.toStringTag]() {
         return "Request";
       }
     };
-    Object.defineProperties(Request2.prototype, {
+    Object.defineProperties(Request.prototype, {
       method: { enumerable: true },
       url: { enumerable: true },
       headers: { enumerable: true },
@@ -5245,7 +5245,7 @@ var init_request = __esm({
     });
     getNodeRequestOptions = (request) => {
       const { parsedURL } = request[INTERNALS3];
-      const headers = new Headers2(request[INTERNALS3].headers);
+      const headers = new Headers(request[INTERNALS3].headers);
       if (!headers.has("Accept")) {
         headers.set("Accept", "*/*");
       }
@@ -5320,9 +5320,9 @@ var src_exports = {};
 __export(src_exports, {
   AbortError: () => AbortError,
   FetchError: () => FetchError,
-  Headers: () => Headers2,
-  Request: () => Request2,
-  Response: () => Response2,
+  Headers: () => Headers,
+  Request: () => Request,
+  Response: () => Response,
   default: () => fetch2,
   isRedirect: () => isRedirect
 });
@@ -5332,14 +5332,14 @@ import zlib from "node:zlib";
 import Stream2, { PassThrough as PassThrough2, pipeline as pump } from "node:stream";
 async function fetch2(url, options_) {
   return new Promise((resolve, reject) => {
-    const request = new Request2(url, options_);
+    const request = new Request(url, options_);
     const { parsedURL, options } = getNodeRequestOptions(request);
     if (!supportedSchemas.has(parsedURL.protocol)) {
       throw new TypeError(`node-fetch cannot load ${url}. URL scheme "${parsedURL.protocol.replace(/:$/, "")}" is not supported.`);
     }
     if (parsedURL.protocol === "data:") {
       const data = dist_default(request.url);
-      const response2 = new Response2(data, { headers: { "Content-Type": data.typeFull } });
+      const response2 = new Response(data, { headers: { "Content-Type": data.typeFull } });
       resolve(response2);
       return;
     }
@@ -5423,7 +5423,7 @@ async function fetch2(url, options_) {
               return;
             }
             const requestOptions = {
-              headers: new Headers2(request.headers),
+              headers: new Headers(request.headers),
               follow: request.follow,
               counter: request.counter + 1,
               agent: request.agent,
@@ -5449,7 +5449,7 @@ async function fetch2(url, options_) {
             if (responseReferrerPolicy) {
               requestOptions.referrerPolicy = responseReferrerPolicy;
             }
-            resolve(fetch2(new Request2(locationURL, requestOptions)));
+            resolve(fetch2(new Request(locationURL, requestOptions)));
             finalize();
             return;
           }
@@ -5477,7 +5477,7 @@ async function fetch2(url, options_) {
       };
       const codings = headers.get("Content-Encoding");
       if (!request.compress || request.method === "HEAD" || codings === null || response_.statusCode === 204 || response_.statusCode === 304) {
-        response = new Response2(body, responseOptions);
+        response = new Response(body, responseOptions);
         resolve(response);
         return;
       }
@@ -5487,7 +5487,7 @@ async function fetch2(url, options_) {
       };
       if (codings === "gzip" || codings === "x-gzip") {
         body = pump(body, zlib.createGunzip(zlibOptions), reject);
-        response = new Response2(body, responseOptions);
+        response = new Response(body, responseOptions);
         resolve(response);
         return;
       }
@@ -5495,18 +5495,18 @@ async function fetch2(url, options_) {
         const raw = pump(response_, new PassThrough2(), reject);
         raw.once("data", (chunk) => {
           body = (chunk[0] & 15) === 8 ? pump(body, zlib.createInflate(), reject) : pump(body, zlib.createInflateRaw(), reject);
-          response = new Response2(body, responseOptions);
+          response = new Response(body, responseOptions);
           resolve(response);
         });
         return;
       }
       if (codings === "br") {
         body = pump(body, zlib.createBrotliDecompress(), reject);
-        response = new Response2(body, responseOptions);
+        response = new Response(body, responseOptions);
         resolve(response);
         return;
       }
-      response = new Response2(body, responseOptions);
+      response = new Response(body, responseOptions);
       resolve(response);
     });
     writeToStream(request_, request);
@@ -5605,14 +5605,14 @@ var init_obsidian_paprika_bg3 = __esm({
 });
 
 // local.ts
-var fetch3 = Promise.resolve().then(() => (init_src(), src_exports));
-if (!globalThis.fetch) {
-  globalThis.fetch = fetch3;
-  globalThis.Headers = Headers;
-  globalThis.Request = Request;
-  globalThis.Response = Response;
-}
 async function main() {
+  const fetch3 = (...args) => Promise.resolve().then(() => (init_src(), src_exports)).then(({ default: fetch4 }) => fetch4(...args));
+  if (!globalThis.fetch) {
+    globalThis.fetch = fetch3;
+    globalThis.Headers = fetch3.Headers;
+    globalThis.Request = fetch3.Request;
+    globalThis.Response = fetch3.Response;
+  }
   const wasm2 = await init_obsidian_paprika_bg3().then(() => obsidian_paprika_bg_exports);
   console.log(wasm2);
 }

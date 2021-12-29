@@ -2,12 +2,20 @@ import esbuild from "esbuild";
 import process from "process";
 import builtins from 'builtin-modules'
 import wasmLoader from 'esbuild-plugin-wasm';
+import wasmpack from 'esbuild-plugin-wasm-pack';
 
 const prod = (process.argv[2] === 'production');
 
 esbuild.build({
-	plugins: [wasmLoader.wasmLoader()],
+	platform: 'node',
+	plugins: [
+		wasmLoader.wasmLoader(),
+		wasmpack.wasmPack({
+            "path": "rust"
+        })
+	],
 	entryPoints: ['main.ts', 'local.ts'],
+	outExtension: {".js":".mjs"},
 	bundle: true,
 	external: ['obsidian', 'electron', ...builtins],
 	format: 'esm',
