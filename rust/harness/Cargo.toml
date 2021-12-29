@@ -1,0 +1,21 @@
+[package]
+name = "harness"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
+[[bin]]
+name = "local"
+path = "src/local.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+futures = "0.3.19"
+serde_json = "1.0.73"
+paprika-api = "1.0.0"
+obsidian-paprika = {path=".."}
+

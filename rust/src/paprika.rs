@@ -2,7 +2,7 @@ use handlebars::Handlebars;
 use paprika_api::api::{Category, Recipe};
 use serde_json::Value;
 
-use crate::lib::handlebars_helpers::newlines_to_bullets;
+use crate::handlebars_helpers::newlines_to_bullets;
 
 fn get_category_strings(recipe: &Recipe, categories: &Vec<Category>) -> Vec<String> {
     let mut s:Vec<String> = Vec::new();

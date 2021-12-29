@@ -19,9 +19,19 @@ main.js
 # obsidian
 data.json
 
+# rust
 rust/target
 rust/**/*.rs.bk
 rust/Cargo.lock
 rust/bin/
 rust/pkg/
 rust/wasm-pack.log
+
+rust/harness/target
+rust/harness/**/*.rs.bk
+rust/harness/Cargo.lock
+rust/harness/bin/
+rust/harness/pkg/
+rust/harness/wasm-pack.log
+
+tmp.md

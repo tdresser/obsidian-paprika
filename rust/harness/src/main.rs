@@ -2,9 +2,7 @@ use std::{io, fs};
 use futures::executor::block_on;
 use paprika_api::api;
 
-use crate::lib::paprika;
-
-mod lib;
+use obsidian_paprika::paprika::get_markdown;
 
 async fn async_main() {
     let stdin = io::stdin();
@@ -29,7 +27,7 @@ async fn async_main() {
     //fs::write("tests/categories.json", categories_string).expect("Unable to write file");
 
     let template = &fs::read_to_string("template.md").unwrap();
-    let markdown = paprika::get_markdown(&recipe, &template, &categories);
+    let markdown = get_markdown(&recipe, &template, &categories);
 
     println!("{}", markdown);
 }
