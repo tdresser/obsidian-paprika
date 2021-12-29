@@ -1,3 +1,6 @@
+Dependency on 
+https://github.com/seanmonstar/reqwest/issues/910
+
 ## Obsidian Sample Plugin
 
 This is a sample plugin for Obsidian (https://obsidian.md).
