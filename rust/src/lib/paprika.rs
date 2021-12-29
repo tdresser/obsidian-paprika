@@ -1,5 +1,5 @@
 use handlebars::Handlebars;
-use paprika_api::api::{self, Category, Recipe, RecipeEntry};
+use paprika_api::api::{Category, Recipe};
 use serde_json::Value;
 
 use crate::lib::handlebars_helpers::newlines_to_bullets;

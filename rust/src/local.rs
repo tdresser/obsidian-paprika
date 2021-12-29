@@ -1,5 +1,4 @@
-use std::{fs};
-use paprika_api::api::{Recipe, RecipeEntry, Category};
+use std::fs;
 
 mod lib;
 use lib::paprika;
