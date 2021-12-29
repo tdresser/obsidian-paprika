@@ -1,12 +1,12 @@
 use std::{io, fs};
+use futures::executor::block_on;
 use paprika_api::api;
 
 use crate::lib::paprika;
 
 mod lib;
 
-#[tokio::main]
-async fn main() {
+async fn async_main() {
     let stdin = io::stdin();
     let mut email = String::new();
     let mut password = String::new();
@@ -32,4 +32,8 @@ async fn main() {
     let markdown = paprika::get_markdown(&recipe, &template, &categories);
 
     println!("{}", markdown);
+}
+
+fn main() {
+    block_on(async_main());
 }
