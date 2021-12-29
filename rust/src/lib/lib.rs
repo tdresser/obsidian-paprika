@@ -15,4 +15,3 @@ extern "C" {
 pub fn greet() {
     alert("Hello, rust!");
 }
-
