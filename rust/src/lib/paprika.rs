@@ -1,7 +1,6 @@
 use handlebars::Handlebars;
-use paprika_api::api::{Category, Recipe, self};
+use paprika_api::api::{Category, Recipe};
 use serde_json::Value;
-use wasm_bindgen::{prelude::*};
 
 use crate::lib::handlebars_helpers::newlines_to_bullets;
 
@@ -15,33 +14,6 @@ fn get_category_strings(recipe: &Recipe, categories: &Vec<Category>) -> Vec<Stri
         }
     }
     return s;
-}
-
-#[wasm_bindgen]
-#[allow(dead_code)]
-pub async fn login(email: String, password: String) -> String {
-    return api::login(&email, &password).await.unwrap().token;
-}
-
-#[wasm_bindgen]
-#[allow(dead_code)]
-pub async fn get_recipes(token: String) -> JsValue {
-    return JsValue::from_serde(
-        &api::get_recipes(&token).await.unwrap()).unwrap();
-}
-
-#[wasm_bindgen]
-#[allow(dead_code)]
-pub async fn get_categories(token: String) -> JsValue {
-    return JsValue::from_serde(
-        &api::get_categories(&token).await.unwrap()).unwrap();
-}
-
-#[wasm_bindgen]
-#[allow(dead_code)]
-pub async fn get_recipe_by_id(token: String, uid:String) -> JsValue {
-    return JsValue::from_serde(
-        &api::get_recipe_by_id(&token, &uid).await.unwrap()).unwrap();
 }
 
 pub fn get_markdown(
