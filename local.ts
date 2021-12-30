@@ -3,7 +3,17 @@ import readline from "node:readline/promises";
 import {readFile} from "fs/promises"
 
 import fetch, {Headers, Request, Response} from "node-fetch";
-import { Recipe, RecipeEntry, Category, get_recipe_by_id_js, login_js, get_recipes_js, get_categories_js, get_markdown_js } from "./rust/pkg/obsidian_paprika_bg";
+import { 
+    Recipe, 
+    RecipeEntry, 
+    Category, 
+    RecipeEntryList, 
+    get_recipe_by_id_js, 
+    login_js, 
+    get_recipes_js, 
+    get_categories_js, 
+    get_markdown_js 
+} from "./rust/pkg/obsidian_paprika_bg";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function become(obj: any, newClass: any) {
@@ -16,10 +26,13 @@ async function login(email: string, password: string): Promise<string> {
 }
 
 async function getRecipes(token:string): Promise<RecipeEntry[]> {
-    const recipeEntries = await get_recipes_js(token) as RecipeEntry[];
-    recipeEntries.forEach(x => {
-        become(x, RecipeEntry);
-    });
+    const recipeEntryList = await get_recipes_js(token) as RecipeEntryList;
+    const recipeEntries:RecipeEntry[] = [];
+    for (let i = 0; i < recipeEntryList.len(); ++i) {
+        const recipe = recipeEntryList.at(i);
+        become(recipe, RecipeEntry);
+        recipeEntries.push(recipe);
+    }
     console.log(recipeEntries);
     return recipeEntries;
 }

@@ -15,6 +15,30 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[derive(Serialize, Deserialize)]
 pub struct RecipeEntryWrapper (RecipeEntry);
 
+impl Clone for RecipeEntryWrapper {
+    fn clone(&self) -> Self {
+        Self(RecipeEntry {
+            uid: self.0.uid.clone(),
+            hash: self.0.hash.clone()
+        })
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+#[wasm_bindgen]
+pub struct RecipeEntryList (Vec<RecipeEntryWrapper>);
+
+#[wasm_bindgen]
+impl RecipeEntryList {
+    pub fn len(&self) -> usize {
+        return self.0.len();
+    }
+
+    pub fn at(&self, i:usize) -> RecipeEntryWrapper {
+        return self.0[i].clone();
+    }
+}
+
 #[wasm_bindgen(js_class="RecipeEntry")]
 impl RecipeEntryWrapper {
     #[wasm_bindgen(constructor)]
@@ -60,9 +84,11 @@ pub async fn login_js(email: String, password: String) -> String {
 
 #[wasm_bindgen()]
 #[allow(dead_code)]
-pub async fn get_recipes_js(token: String) -> JsValue {
-    return JsValue::from_serde(
-        &api::get_recipes(&token).await.unwrap()).unwrap();
+pub async fn get_recipes_js(token: String) -> RecipeEntryList {
+    let recipe_entries = api::get_recipes(&token).await.unwrap();
+
+    return RecipeEntryList(recipe_entries.
+        into_iter().map(|x| RecipeEntryWrapper(x)).collect());
 }
 
 #[wasm_bindgen()]
