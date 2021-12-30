@@ -1,5 +1,5 @@
 import readlinePromise from "node:readline/promises";
-import { RecipeWrapper, RecipeEntryWrapper, CategoryWrapper, login_js, get_recipes_js, get_categories_js, get_markdown_js, get_recipe_by_id_js } from "./rust/pkg/obsidian_paprika_bg";
+import { RecipeWrapper, RecipeEntryWrapper, CategoryWrapper, getRecipeById, login_js, get_recipes_js, get_categories_js, get_markdown_js, get_recipe_by_id_js } from "./rust/pkg/obsidian_paprika_bg";
 
 async function login(email: string, password: string): Promise<string> {
     return await login_js(email, password);
@@ -15,10 +15,6 @@ async function getCategories(token:string): Promise<CategoryWrapper[]> {
 
 async function getMarkdown(recipe:RecipeWrapper, template: string, categories: CategoryWrapper[]) : Promise<string> {
     return await get_markdown_js(recipe, template, categories);
-}
-
-async function getRecipeById(token: string, recipeEntry: RecipeEntryWrapper) {
-    return await get_recipe_by_id_js(token, recipeEntry.uid);
 }
 
 async function main() {
@@ -52,7 +48,7 @@ async function main() {
     const recipes = await getRecipes(token);
     console.log("TOKEN: " + token);
     console.log("RECIPES: " + recipes);
-    const recipe = recipes[0];
+    const recipe = getRecipeById(token, recipes[0]);
     console.log(JSON.stringify(recipe));
     const uid = recipes[0].uid;
     console.log(uid)

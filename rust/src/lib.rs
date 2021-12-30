@@ -32,7 +32,7 @@ impl RecipeEntryWrapper {
 
 #[wasm_bindgen]
 #[allow(dead_code)]
-struct RecipeWrapper {
+pub struct RecipeWrapper {
     recipe: Recipe,
 }
 
@@ -67,11 +67,12 @@ pub async fn get_categories_js(token: String) -> JsValue {
         &api::get_categories(&token).await.unwrap()).unwrap();
 }
 
-#[wasm_bindgen()]
+#[wasm_bindgen(js_name=getRecipeById)]
 #[allow(dead_code)]
-pub async fn get_recipe_by_id_js(token: String, uid:String) -> JsValue {
-    return JsValue::from_serde(
-        &api::get_recipe_by_id(&token, &uid).await.unwrap()).unwrap();
+pub async fn get_recipe_by_id_js(token: String, uid:String) -> RecipeWrapper {
+    return RecipeWrapper {
+        recipe: api::get_recipe_by_id(&token, &uid).await.unwrap()
+    }
 }
 
 
