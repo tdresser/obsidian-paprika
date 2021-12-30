@@ -1,5 +1,7 @@
 // @ts-ignore
-import readlinePromise from "node:readline/promises";
+import readline from "node:readline/promises";
+import {readFile} from "fs/promises"
+
 import fetch, {Headers, Request, Response} from "node-fetch";
 import { Recipe, RecipeEntry, Category, get_recipe_by_id_js, login_js, get_recipes_js, get_categories_js, get_markdown_js } from "./rust/pkg/obsidian_paprika_bg";
 
@@ -36,30 +38,23 @@ async function main() {
         globalThis.Response = Response;
     }
 
-    const wasm = await import('./rust/pkg/obsidian_paprika_bg');
-
-    const readline = readlinePromise.createInterface({
+    const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     })
 
-    const email = await readline.question("email\n");
-    const password = await readline.question("password\n");
+    const email = await rl.question("email\n");
+    const password = await rl.question("password\n");
 
-    readline.close();
-
-    console.log(email);
-    console.log(password);
+    rl.close();
 
     const token = await login(email, password);
     const recipes = await getRecipes(token);
-    console.log("TOKEN: " + token);
-    console.log("RECIPES: " + recipes);
-    const recipe = getRecipeById(token, recipes[0]);
-    console.log(JSON.stringify(recipe));
-    const uid = recipes[0].uid;
-    console.log(uid)
-    console.log(JSON.stringify(wasm));
+    const recipe = await getRecipeById(token, recipes[0]);
+    const categories = await getCategories(token);
+    const template = await (await readFile("rust/template.md")).toString();
+
+    console.log(await getMarkdown(recipe, template, categories));
 }
 
 main();

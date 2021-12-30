@@ -21,14 +21,21 @@ pub fn get_markdown(
     template: &String,
     categories: &Vec<Category>,
 ) -> String {
+    println!("TEESTING");
     let mut handlebars = Handlebars::new();
     handlebars.set_strict_mode(true);
     handlebars.register_helper("newlines_to_bullets", Box::new(newlines_to_bullets));
 
-    let mut recipe_value = serde_json::to_value(recipe).unwrap();
+    let mut recipe_value = match serde_json::to_value(recipe) {
+        Ok(value) => value,
+        Err(error) => {panic!("Error reading recipe {:?}", error);}
+    };
 
     let category_strings = get_category_strings(recipe, categories);
-    let categories_value = serde_json::to_value(category_strings).unwrap();
+    let categories_value = match serde_json::to_value(category_strings) {
+        Ok(value) => value,
+        Err(error) => {panic!("Error reading categories {:?}", error);}
+    };
     
     if let Value::Object(o) = &mut recipe_value {
         o.insert("categories".to_string(), categories_value);
@@ -37,5 +44,11 @@ pub fn get_markdown(
     assert!(handlebars
         .register_template_string("template", template)
         .is_ok());
-    return handlebars.render("template", &recipe_value).unwrap();
+
+    let result = match handlebars.render("template", &recipe_value) {
+        Ok(s) => s,
+        Err(error) => {panic!("Error reading categories {:?}", error);}
+    };
+
+    return result;
 }
