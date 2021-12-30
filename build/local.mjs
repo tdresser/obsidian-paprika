@@ -6257,12 +6257,13 @@ async function main() {
     input: process.stdin,
     output: process.stdout
   });
-  const email = await readline.question("email");
-  const password = await readline.question("password");
+  const email = await readline.question("email\n");
+  const password = await readline.question("password\n");
   readline.close();
   console.log(email);
   console.log(password);
-  wasm2.login(email, password);
+  const token = await wasm2.login(email, password);
+  console.log("TOKEN: " + token);
   console.log(JSON.stringify(wasm2));
 }
 main();

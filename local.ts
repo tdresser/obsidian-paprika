@@ -28,7 +28,8 @@ async function main() {
     console.log(email);
     console.log(password);
 
-    wasm.login(email, password);
+    const token = await wasm.login(email, password);
+    console.log("TOKEN: " + token);
     console.log(JSON.stringify(wasm));
 }
 
