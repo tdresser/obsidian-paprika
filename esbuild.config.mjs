@@ -9,7 +9,12 @@ const prod = (process.argv[2] === 'production');
 esbuild.build({
 	platform: 'node',
 	plugins: [
-		wasmLoader.wasmLoader(),
+		wasmLoader.wasmLoader(
+			{
+				// TODO - this is big, but the alternative wasn't working.
+				mode:"embedded" 
+			}
+		),
 		wasmpack.wasmPack({
             "path": "rust"
         })

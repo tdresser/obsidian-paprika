@@ -10,7 +10,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "lib": [
-      "DOM", // TODO, should this be disabled?
+      "ESNext",
+      //"DOM", // TODO, should this be disabled?
       "ES5",
       "ES6",
       "ES7"
