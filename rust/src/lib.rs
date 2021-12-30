@@ -79,7 +79,11 @@ extern "C" {
 #[wasm_bindgen()]
 #[allow(dead_code)]
 pub async fn login_js(email: String, password: String) -> String {
-    return api::login(&email, &password).await.unwrap().token;
+    log("Trying to log in");
+    return match api::login(&email, &password).await {
+        Ok(token) => token.token,
+        Err(error) => {panic!("Error parsing token {:?}", error);}
+    }
 }
 
 #[wasm_bindgen()]

@@ -1,70 +1,9 @@
 // @ts-ignore
 import readline from "node:readline/promises";
 import {readFile} from "fs/promises"
-
-import fetch, {Headers, Request, Response} from "node-fetch";
-import { 
-    Recipe, 
-    RecipeEntry, 
-    Category, 
-    RecipeEntryList, 
-    get_recipe_by_id_js, 
-    login_js, 
-    get_recipes_js, 
-    get_categories_js, 
-    get_markdown_js 
-} from "./rust/pkg/obsidian_paprika_bg";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function become(obj: any, newClass: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    obj.__proto__ = (<any>(new newClass)).__proto__;
-}
-
-async function login(email: string, password: string): Promise<string> {
-    return await login_js(email, password);
-}
-
-async function getRecipes(token:string): Promise<RecipeEntry[]> {
-    const recipeEntryList = await get_recipes_js(token) as RecipeEntryList;
-    const recipeEntries:RecipeEntry[] = [];
-    for (let i = 0; i < recipeEntryList.len(); ++i) {
-        const recipe = recipeEntryList.at(i);
-        become(recipe, RecipeEntry);
-        recipeEntries.push(recipe);
-    }
-    console.log(recipeEntries);
-    return recipeEntries;
-}
-
-async function getCategories(token:string): Promise<Category[]> {
-    return await get_categories_js(token);
-}
-
-async function getMarkdown(recipe:Recipe, template: string, categories: Category[]) : Promise<string> {
-    return await get_markdown_js(recipe, template, categories);
-}
-
-async function getRecipeById(token: string, recipeEntry : RecipeEntry) : Promise<Recipe> {
-    console.log("TOKEN: " + token);
-    console.log("ENTRY: " + JSON.stringify(recipeEntry));
-    console.log(recipeEntry instanceof RecipeEntry);
-    return await get_recipe_by_id_js(token, recipeEntry);
-}
+import {login, getCategories, getMarkdown, getRecipeById, getRecipes} from "paprika";
 
 async function main() {
-    // Via https://github.com/node-fetch/node-fetch.
-    if (!globalThis.fetch) {
-        // @ts-ignore
-        globalThis.fetch = fetch;
-        // @ts-ignore
-        globalThis.Headers = Headers;
-        // @ts-ignore
-        globalThis.Request = Request;
-        // @ts-ignore
-        globalThis.Response = Response;
-    }
-
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout

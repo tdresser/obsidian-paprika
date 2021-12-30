@@ -1,10 +1,10 @@
 use std::{io, fs};
-use futures::executor::block_on;
-use paprika_api::api;
-
 use obsidian_paprika::paprika::get_markdown;
+use paprika_api::api;
+use tokio;
 
-async fn async_main() {
+#[tokio::main]
+async fn main() {
     let stdin = io::stdin();
     let mut email = String::new();
     let mut password = String::new();
@@ -26,12 +26,8 @@ async fn async_main() {
     //let categories_string = serde_json::to_string(&categories).unwrap();
     //fs::write("tests/categories.json", categories_string).expect("Unable to write file");
 
-    let template = &fs::read_to_string("template.md").unwrap();
+    let template = &fs::read_to_string("../template.md").unwrap();
     let markdown = get_markdown(&recipe, &template, &categories);
 
     println!("{}", markdown);
-}
-
-fn main() {
-    block_on(async_main());
 }
