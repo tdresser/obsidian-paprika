@@ -5,12 +5,23 @@ import {readFile} from "fs/promises"
 import fetch, {Headers, Request, Response} from "node-fetch";
 import { Recipe, RecipeEntry, Category, get_recipe_by_id_js, login_js, get_recipes_js, get_categories_js, get_markdown_js } from "./rust/pkg/obsidian_paprika_bg";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function become(obj: any, newClass: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    obj.__proto__ = (<any>(new newClass)).__proto__;
+}
+
 async function login(email: string, password: string): Promise<string> {
     return await login_js(email, password);
 }
 
 async function getRecipes(token:string): Promise<RecipeEntry[]> {
-    return await get_recipes_js(token);
+    const recipeEntries = await get_recipes_js(token) as RecipeEntry[];
+    recipeEntries.forEach(x => {
+        become(x, RecipeEntry);
+    });
+    console.log(recipeEntries);
+    return recipeEntries;
 }
 
 async function getCategories(token:string): Promise<Category[]> {
@@ -22,6 +33,9 @@ async function getMarkdown(recipe:Recipe, template: string, categories: Category
 }
 
 async function getRecipeById(token: string, recipeEntry : RecipeEntry) : Promise<Recipe> {
+    console.log("TOKEN: " + token);
+    console.log("ENTRY: " + JSON.stringify(recipeEntry));
+    console.log(recipeEntry instanceof RecipeEntry);
     return await get_recipe_by_id_js(token, recipeEntry);
 }
 

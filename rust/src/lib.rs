@@ -17,6 +17,14 @@ pub struct RecipeEntryWrapper (RecipeEntry);
 
 #[wasm_bindgen(js_class="RecipeEntry")]
 impl RecipeEntryWrapper {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> RecipeEntryWrapper {
+        RecipeEntryWrapper(RecipeEntry{
+            uid:"".to_string(), 
+            hash:"".to_string()
+        })
+    }
+
     #[allow(dead_code)]
     #[wasm_bindgen(getter)]
     pub fn uid(&self) -> String {
@@ -35,7 +43,6 @@ impl RecipeEntryWrapper {
 pub struct RecipeWrapper (Recipe);
 
 #[wasm_bindgen(js_name="Category")]
-#[allow(dead_code)]
 struct CategoryWrapper (Category);
 
 #[wasm_bindgen]
@@ -70,7 +77,6 @@ pub async fn get_categories_js(token: String) -> JsValue {
 pub async fn get_recipe_by_id_js(token: String, recipe_entry:RecipeEntryWrapper) -> RecipeWrapper {
     return 
         RecipeWrapper(api::get_recipe_by_id(&token, &recipe_entry.0.uid).await.unwrap())
-    
 }
 
 

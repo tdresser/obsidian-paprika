@@ -16,7 +16,8 @@ esbuild.build({
 			}
 		),
 		wasmpack.wasmPack({
-            "path": "rust"
+            "path": "rust",
+			"profile": "dev",
         })
 	],
 	entryPoints: ['main.ts', 'local.ts'],
