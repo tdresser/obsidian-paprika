@@ -10,37 +10,31 @@ use wasm_bindgen::prelude::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[wasm_bindgen]
-struct RecipeEntryWrapper {
-    recipe_entry: RecipeEntry,
-}
+#[wasm_bindgen(js_name="RecipeEntry")]
+struct RecipeEntryWrapper (RecipeEntry);
 
-#[wasm_bindgen]
+#[wasm_bindgen(js_class="RecipeEntry")]
 impl RecipeEntryWrapper {
     #[allow(dead_code)]
     #[wasm_bindgen(getter)]
     pub fn uid(&self) -> String {
-        return self.recipe_entry.uid.clone();
+        return self.0.uid.clone();
     }
 
     #[allow(dead_code)]
     #[wasm_bindgen(getter)]
     pub fn hash(&self) -> String {
-        return self.recipe_entry.hash.clone();
+        return self.0.hash.clone();
     }
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(js_name="Recipe")]
 #[allow(dead_code)]
-pub struct RecipeWrapper {
-    recipe: Recipe,
-}
+pub struct RecipeWrapper (Recipe);
 
-#[wasm_bindgen]
+#[wasm_bindgen(js_name="Category")]
 #[allow(dead_code)]
-struct CategoryWrapper {
-    category: Category,
-}
+struct CategoryWrapper (Category);
 
 #[wasm_bindgen]
 extern "C" {
@@ -67,12 +61,13 @@ pub async fn get_categories_js(token: String) -> JsValue {
         &api::get_categories(&token).await.unwrap()).unwrap();
 }
 
-#[wasm_bindgen(js_name=getRecipeById)]
+#[wasm_bindgen]
 #[allow(dead_code)]
-pub async fn get_recipe_by_id_js(token: String, uid:String) -> RecipeWrapper {
-    return RecipeWrapper {
-        recipe: api::get_recipe_by_id(&token, &uid).await.unwrap()
-    }
+pub async fn get_recipe_by_id_js(token: String, recipe_entry:JsValue) -> RecipeWrapper {
+    let uid = JsValue::into_serde::<RecipeEntry>(&recipe_entry).unwrap().uid;
+    return 
+        RecipeWrapper(api::get_recipe_by_id(&token, &uid).await.unwrap())
+    
 }
 
 
