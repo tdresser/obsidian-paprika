@@ -1,5 +1,25 @@
 import readlinePromise from "node:readline/promises";
+import { RecipeWrapper, RecipeEntryWrapper, CategoryWrapper, login_js, get_recipes_js, get_categories_js, get_markdown_js, get_recipe_by_id_js } from "./rust/pkg/obsidian_paprika_bg";
 
+async function login(email: string, password: string): Promise<string> {
+    return await login_js(email, password);
+}
+
+async function getRecipes(token:string): Promise<RecipeEntryWrapper[]> {
+    return await get_recipes_js(token);
+}
+
+async function getCategories(token:string): Promise<CategoryWrapper[]> {
+    return await get_categories_js(token);
+}
+
+async function getMarkdown(recipe:RecipeWrapper, template: string, categories: CategoryWrapper[]) : Promise<string> {
+    return await get_markdown_js(recipe, template, categories);
+}
+
+async function getRecipeById(token: string, recipeEntry: RecipeEntryWrapper) {
+    return await get_recipe_by_id_js(token, recipeEntry.uid);
+}
 
 async function main() {
     const fetchImport = await import('node-fetch');
@@ -18,7 +38,7 @@ async function main() {
     const readline = readlinePromise.createInterface({
         input: process.stdin,
         output: process.stdout
-      })
+    })
 
     const email = await readline.question("email\n");
     const password = await readline.question("password\n");
@@ -28,8 +48,14 @@ async function main() {
     console.log(email);
     console.log(password);
 
-    const token = await wasm.login(email, password);
+    const token = await login(email, password);
+    const recipes = await getRecipes(token);
     console.log("TOKEN: " + token);
+    console.log("RECIPES: " + recipes);
+    const recipe = recipes[0];
+    console.log(JSON.stringify(recipe));
+    const uid = recipes[0].uid;
+    console.log(uid)
     console.log(JSON.stringify(wasm));
 }
 
