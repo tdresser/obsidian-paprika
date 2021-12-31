@@ -10,7 +10,11 @@ import {
     get_markdown_js 
 } from "./rust/pkg/obsidian_paprika_bg";
 
+import { polyfillFetch } from "fetch_polyfill";
+
 import {become} from "ts_util";
+
+polyfillFetch();
 
 export async function login(email: string, password: string): Promise<string> {
     return await login_js(email, password);
