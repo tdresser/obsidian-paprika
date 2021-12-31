@@ -12,8 +12,6 @@ import {
 
 import { polyfillFetch } from "fetch_polyfill";
 
-import {become} from "ts_util";
-
 polyfillFetch();
 
 export async function login(email: string, password: string): Promise<string> {
@@ -25,7 +23,6 @@ export async function getRecipes(token:string): Promise<RecipeEntry[]> {
     const recipeEntries:RecipeEntry[] = [];
     for (let i = 0; i < recipeEntryList.len(); ++i) {
         const recipe = recipeEntryList.at(i);
-        become(recipe, RecipeEntry);
         recipeEntries.push(recipe);
     }
     console.log(recipeEntries);
