@@ -1,8 +1,8 @@
-pub mod paprika;
 mod handlebars_helpers;
+pub mod paprika;
 
-use paprika_api::api::{self, Recipe, Category, RecipeEntry};
-use serde::{Serialize, Deserialize};
+use paprika_api::api::{self, Category, Recipe, RecipeEntry};
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -11,63 +11,29 @@ use wasm_bindgen::prelude::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[wasm_bindgen(js_name="RecipeEntry")]
-#[derive(Serialize, Deserialize)]
-pub struct RecipeEntryWrapper (RecipeEntry);
+// HACK: we can't pass out Vec<T>'s, so provide a simple list type.
+#[macro_export]
+macro_rules! hack_wasm_list {
+    ( $base:ident, $list:ident ) => {
+        #[derive(Serialize, Deserialize)]
+        #[wasm_bindgen]
+        pub struct $list(Vec<$base>);
 
-impl Clone for RecipeEntryWrapper {
-    fn clone(&self) -> Self {
-        Self(RecipeEntry {
-            uid: self.0.uid.clone(),
-            hash: self.0.hash.clone()
-        })
-    }
+        #[wasm_bindgen]
+        impl $list {
+            pub fn len(&self) -> usize {
+                return self.0.len();
+            }
+
+            pub fn at(&self, i: usize) -> $base {
+                return self.0[i].clone();
+            }
+        }
+    };
 }
 
-#[derive(Serialize, Deserialize)]
-#[wasm_bindgen]
-pub struct RecipeEntryList (Vec<RecipeEntryWrapper>);
-
-#[wasm_bindgen]
-impl RecipeEntryList {
-    pub fn len(&self) -> usize {
-        return self.0.len();
-    }
-
-    pub fn at(&self, i:usize) -> RecipeEntryWrapper {
-        return self.0[i].clone();
-    }
-}
-
-#[wasm_bindgen(js_class="RecipeEntry")]
-impl RecipeEntryWrapper {
-    #[wasm_bindgen(constructor)]
-    pub fn new() -> RecipeEntryWrapper {
-        RecipeEntryWrapper(RecipeEntry{
-            uid:"".to_string(), 
-            hash:"".to_string()
-        })
-    }
-
-    #[allow(dead_code)]
-    #[wasm_bindgen(getter)]
-    pub fn uid(&self) -> String {
-        return self.0.uid.clone();
-    }
-
-    #[allow(dead_code)]
-    #[wasm_bindgen(getter)]
-    pub fn hash(&self) -> String {
-        return self.0.hash.clone();
-    }
-}
-
-#[wasm_bindgen(js_name="Recipe")]
-#[derive(Serialize, Deserialize)]
-pub struct RecipeWrapper (Recipe);
-
-#[wasm_bindgen(js_name="Category")]
-struct CategoryWrapper (Category);
+hack_wasm_list!(RecipeEntry, RecipeEntryList);
+hack_wasm_list!(Category, CategoryList);
 
 #[wasm_bindgen]
 extern "C" {
@@ -83,7 +49,9 @@ pub async fn login_js(email: String, password: String) -> String {
     log(&format!("Trying to log in {} {}", email, password));
     let token = match api::login(&email, &password).await {
         Ok(token) => token.token,
-        Err(error) => {panic!("Error parsing token {:?}", error);}
+        Err(error) => {
+            panic!("Error parsing token {:?}", error);
+        }
     };
     log("Got token");
     return token;
@@ -93,35 +61,30 @@ pub async fn login_js(email: String, password: String) -> String {
 #[allow(dead_code)]
 pub async fn get_recipes_js(token: String) -> RecipeEntryList {
     let recipe_entries = api::get_recipes(&token).await.unwrap();
-
-    return RecipeEntryList(recipe_entries.
-        into_iter().map(|x| RecipeEntryWrapper(x)).collect());
+    return RecipeEntryList(recipe_entries);
 }
 
 #[wasm_bindgen()]
 #[allow(dead_code)]
-pub async fn get_categories_js(token: String) -> JsValue {
-    return JsValue::from_serde(
-        &api::get_categories(&token).await.unwrap()).unwrap();
+pub async fn get_categories_js(token: String) -> CategoryList {
+    let categories = api::get_categories(&token).await.unwrap();
+    return CategoryList(categories);
 }
 
 #[wasm_bindgen]
 #[allow(dead_code)]
-pub async fn get_recipe_by_id_js(token: String, recipe_entry:RecipeEntryWrapper) -> RecipeWrapper {
-    return 
-        RecipeWrapper(api::get_recipe_by_id(&token, &recipe_entry.0.uid).await.unwrap())
+pub async fn get_recipe_by_id_js(token: String, recipe_entry: RecipeEntry) -> Recipe {
+    return api::get_recipe_by_id(&token, &recipe_entry.uid)
+            .await
+            .unwrap();
 }
-
 
 #[wasm_bindgen]
 #[allow(dead_code)]
 pub fn get_markdown_js(
-    recipe: RecipeWrapper,
+    recipe: Recipe,
     template: String,
-    categories_value: JsValue,
+    category_list: CategoryList,
 ) -> String {
-    log("A");
-    let categories = categories_value.into_serde::<Vec<Category>>().unwrap();
-    log("C");
-    return paprika::get_markdown(&recipe.0, &template, &categories);
+    return paprika::get_markdown(&recipe, &template, &category_list.0);
 }
