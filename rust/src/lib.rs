@@ -21,12 +21,21 @@ macro_rules! hack_wasm_list {
 
         #[wasm_bindgen]
         impl $list {
+            #[wasm_bindgen(constructor)]
+            pub fn new() -> $list {
+                return $list(Vec::<$base>::new())
+            }
+
             pub fn len(&self) -> usize {
                 return self.0.len();
             }
 
             pub fn at(&self, i: usize) -> $base {
                 return self.0[i].clone();
+            }
+
+            pub fn push(&mut self, x:$base) {
+                self.0.push(x);
             }
         }
     };
@@ -87,4 +96,11 @@ pub fn get_markdown_js(
     category_list: CategoryList,
 ) -> String {
     return paprika::get_markdown(&recipe, &template, &category_list.0);
+}
+
+#[wasm_bindgen]
+#[allow(dead_code)]
+pub fn get_default_template_js() -> String {
+    let b =  include_bytes!("../template.md");
+    return String::from(String::from_utf8_lossy(b));
 }

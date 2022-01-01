@@ -1,7 +1,6 @@
 // @ts-ignore
 import readline from "node:readline/promises";
-import {readFile} from "fs/promises"
-import {login, getCategories, getMarkdown, getRecipeById, getRecipes} from "paprika";
+import {login, getCategories, getMarkdown, getRecipeById, getRecipes, getDefaultTemplate} from "paprika";
 
 async function main() {
     const rl = readline.createInterface({
@@ -18,7 +17,7 @@ async function main() {
     const recipes = await getRecipes(token);
     const recipe = await getRecipeById(token, recipes[0]);
     const categories = await getCategories(token);
-    const template = await (await readFile("rust/template.md")).toString();
+    const template = getDefaultTemplate();
 
     console.log(await getMarkdown(recipe, template, categories));
 }

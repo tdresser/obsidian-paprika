@@ -3,7 +3,6 @@ use obsidian_paprika::paprika::get_markdown;
 use paprika_api::api;
 use tokio;
 
-// TODO: https://doc.rust-lang.org/core/macro.include_bytes.html the template.
 // What's the difference between photo_url and image_url?
 
 #[tokio::main]
