@@ -3,6 +3,9 @@ use obsidian_paprika::paprika::get_markdown;
 use paprika_api::api;
 use tokio;
 
+// TODO: https://doc.rust-lang.org/core/macro.include_bytes.html the template.
+// What's the difference between photo_url and image_url?
+
 #[tokio::main]
 async fn main() {
     let stdin = io::stdin();
@@ -21,10 +24,7 @@ async fn main() {
     let recipe_entries = api::get_recipes(&token).await.unwrap();
     let categories = api::get_categories(&token).await.unwrap();
 
-    let recipe = api::get_recipe_by_id(&token, &recipe_entries[0].uid).await.unwrap();    
-
-    //let categories_string = serde_json::to_string(&categories).unwrap();
-    //fs::write("tests/categories.json", categories_string).expect("Unable to write file");
+    let recipe = api::get_recipe_by_id(&token, &recipe_entries[1].uid).await.unwrap();    
 
     let template = &fs::read_to_string("../template.md").unwrap();
     let markdown = get_markdown(&recipe, &template, &categories);

@@ -15,7 +15,7 @@ Categories: {{#each categories}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
 
 Via [{{source}}]({{source_url}}).
 
-![photo]({{photo_url}})
+![photo]({{image_url}})
 
 ## Description
 {{#if servings}}

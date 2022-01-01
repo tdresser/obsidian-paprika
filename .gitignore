@@ -35,3 +35,5 @@ rust/harness/pkg/
 rust/harness/wasm-pack.log
 
 tmp.md
+.DS_Store
+rust/harness/test.md
