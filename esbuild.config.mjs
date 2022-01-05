@@ -25,7 +25,7 @@ esbuild.build({
 	outExtension: {".js":".mjs"},
 	bundle: true,
 	external: ['obsidian', 'electron', ...builtins],
-	format: 'esm',
+	format: 'cjs',
 	watch: !prod,
 	target: 'esnext',
 	logLevel: "info",
@@ -34,4 +34,4 @@ esbuild.build({
 	outdir: 'build',
 }).catch(() => process.exit(1));
 
-fs.copyFileSync("build/main.mjs", "main.js");
+//fs.copyFileSync("build/main.mjs", "main.js");
