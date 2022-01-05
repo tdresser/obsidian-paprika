@@ -3,6 +3,7 @@ import process from "process";
 import builtins from 'builtin-modules'
 import wasmLoader from 'esbuild-plugin-wasm';
 import wasmpack from 'esbuild-plugin-wasm-pack';
+import fs from 'fs'
 
 const prod = (process.argv[2] === 'production');
 
@@ -32,3 +33,5 @@ esbuild.build({
 	treeShaking: true,
 	outdir: 'build',
 }).catch(() => process.exit(1));
+
+fs.copyFileSync("build/main.mjs", "main.js");

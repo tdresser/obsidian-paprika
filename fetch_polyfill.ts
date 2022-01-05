@@ -1,5 +1,7 @@
 import fetch, {Headers, Request, Response} from "node-fetch";
 
+// Required until https://github.com/seanmonstar/reqwest/issues/910 is resolved.
+
 export function polyfillFetch() {
     // Via https://github.com/node-fetch/node-fetch.
     if (!globalThis.fetch) {

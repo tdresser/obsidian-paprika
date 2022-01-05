@@ -1,5 +1,9 @@
-Dependency on 
-https://github.com/seanmonstar/reqwest/issues/910
+# Rust prereqs
+Install rust, or `rustup update`.
+Install wasm-pack: https://rustwasm.github.io/wasm-pack/installer/
+
+# Dependencies
+git submodule init
 
 ## Obsidian Sample Plugin
 
