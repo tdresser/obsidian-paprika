@@ -13,9 +13,9 @@
 } from "./rust/pkg/obsidian_paprika_bg";*/
 
 import uint8array from './rust/pkg/obsidian_paprika_bg.wasm'; 
+import './rust/pkg/obsidian_paprika';
 
 import { polyfillFetch } from "fetch_polyfill";
-
 
 interface ListInterface<Base> {
     len(): number;
@@ -47,9 +47,18 @@ export class Paprika {
     }
 
     async init() {
-        const imports = {};
+        //const imports = {};
+        const { get_default_template_js } = wasm_bindgen;
+        console.log(wasm_bindgen)
+
+        await wasm_bindgen(uint8array);
+
         console.log("PRE");
-        console.log(await WebAssembly.instantiate((uint8array as Uint8Array).buffer, imports));
+        console.log(JSON.stringify(wasm_bindgen));
+        console.log(get_default_template_js())
+        console.log("POST");
+        //console.log(uint8array);
+        //console.log(await WebAssembly.instantiate((uint8array as Uint8Array).buffer, imports));
         //this.wasm = (await WebAssembly.instantiate(uint8array, imports)).exports; 
         //console.log(this.wasm);
     }

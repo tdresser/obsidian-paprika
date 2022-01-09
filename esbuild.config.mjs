@@ -7,13 +7,13 @@ const prod = (process.argv[2] === 'production');
 
 esbuild.build({
 	platform: 'node',
-	plugins: [
+	/*plugins: [
 		wasmpack.wasmPack({
             "path": "rust",
 			"profile": "dev",
 			"target": "no-modules"
         })
-	],
+	],*/
 	entryPoints: ['main.ts', 'local.ts'],
 	bundle: true,
 	external: ['obsidian', ...builtins],
@@ -22,7 +22,7 @@ esbuild.build({
 	target: 'esnext',
 	logLevel: "info",
 	sourcemap: prod ? false : 'inline',
-	treeShaking: true,
+	treeShaking: false,
 	outdir: 'build',
 	loader: {
 		'.wasm': 'binary'

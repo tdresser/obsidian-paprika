@@ -1,3 +1,7 @@
+# TODO
+- Currently playing with hacks for globalThis to expose wasm_bindgen from obsidian_paprika.js.
+- Re-enable tree shaking.
+
 # Rust prereqs
 Install rust, or `rustup update`.
 Install wasm-pack: https://rustwasm.github.io/wasm-pack/installer/

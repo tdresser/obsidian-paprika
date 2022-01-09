@@ -6,7 +6,7 @@ async function main() {
 
     const paprika = new Paprika();
     await paprika.init();
-    console.log(paprika.getDefaultTemplate());
+    //console.log(paprika.getDefaultTemplate());
 
     /*
     const rl = readline.createInterface({
