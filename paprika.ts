@@ -1,4 +1,4 @@
-import { 
+/*import { 
     Recipe, 
     RecipeEntry, 
     Category, 
@@ -10,11 +10,12 @@ import {
     get_markdown_js, 
     get_default_template_js,
     CategoryList
-} from "./rust/pkg/obsidian_paprika_bg";
+} from "./rust/pkg/obsidian_paprika_bg";*/
+
+import uint8array from './rust/pkg/obsidian_paprika_bg.wasm'; 
 
 import { polyfillFetch } from "fetch_polyfill";
 
-polyfillFetch();
 
 interface ListInterface<Base> {
     len(): number;
@@ -38,32 +39,48 @@ function categoryArrayToList(a:Category[]) {
     return list;
 }
 
-export async function login(email: string, password: string): Promise<string> {
-    return await login_js(email, password);
-}
+export class Paprika {
+    wasm : WebAssembly.Exports | null = null;
 
-export async function getRecipes(token:string): Promise<RecipeEntry[]> {
-    const recipeEntryList = await get_recipes_js(token) as RecipeEntryList;
-    return listToArray(recipeEntryList);
-}
+    constructor() {
+        polyfillFetch();
+    }
 
-export async function getCategories(token:string): Promise<Category[]> {
-    const categoryList = await get_categories_js(token);
-    return listToArray(categoryList);
-}
+    async init() {
+        const imports = {};
+        console.log("PRE");
+        console.log(await WebAssembly.instantiate((uint8array as Uint8Array).buffer, imports));
+        //this.wasm = (await WebAssembly.instantiate(uint8array, imports)).exports; 
+        //console.log(this.wasm);
+    }
+        
+    async login(email: string, password: string): Promise<string> {
+        return await login_js(email, password);
+    }
 
-export async function getMarkdown(recipe:Recipe, template: string, categories: Category[]) : Promise<string> {
-    const categoryList = categoryArrayToList(categories);
-    return await get_markdown_js(recipe, template, categoryList);
-}
+    async getRecipes(token:string): Promise<RecipeEntry[]> {
+        const recipeEntryList = await get_recipes_js(token) as RecipeEntryList;
+        return listToArray(recipeEntryList);
+    }
 
-export async function getRecipeById(token: string, recipeEntry : RecipeEntry) : Promise<Recipe> {
-    console.log("TOKEN: " + token);
-    console.log("ENTRY: " + JSON.stringify(recipeEntry));
-    console.log(recipeEntry instanceof RecipeEntry);
-    return await get_recipe_by_id_js(token, recipeEntry);
-}
+    async getCategories(token:string): Promise<Category[]> {
+        const categoryList = await get_categories_js(token);
+        return listToArray(categoryList);
+    }
 
-export function getDefaultTemplate() : string {
-    return get_default_template_js()
+    async getMarkdown(recipe:Recipe, template: string, categories: Category[]) : Promise<string> {
+        const categoryList = categoryArrayToList(categories);
+        return await get_markdown_js(recipe, template, categoryList);
+    }
+
+    async getRecipeById(token: string, recipeEntry : RecipeEntry) : Promise<Recipe> {
+        console.log("TOKEN: " + token);
+        console.log("ENTRY: " + JSON.stringify(recipeEntry));
+        console.log(recipeEntry instanceof RecipeEntry);
+        return await get_recipe_by_id_js(token, recipeEntry);
+    }
+
+    getDefaultTemplate() : string {
+        return get_default_template_js()
+    }
 }

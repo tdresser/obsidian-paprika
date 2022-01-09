@@ -1,8 +1,14 @@
 // @ts-ignore
 import readline from "node:readline/promises";
-import {login, getCategories, getMarkdown, getRecipeById, getRecipes, getDefaultTemplate} from "paprika";
+import {Paprika} from "paprika";
 
 async function main() {
+
+    const paprika = new Paprika();
+    await paprika.init();
+    console.log(paprika.getDefaultTemplate());
+
+    /*
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
@@ -19,7 +25,7 @@ async function main() {
     const categories = await getCategories(token);
     const template = getDefaultTemplate();
 
-    console.log(await getMarkdown(recipe, template, categories));
+    console.log(await getMarkdown(recipe, template, categories));*/
 }
 
 main();

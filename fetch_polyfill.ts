@@ -1,4 +1,4 @@
-import fetch, {Headers, Request, Response} from "node-fetch";
+import fetch, {Headers, Request, Response} from "node-fetch-commonjs";
 
 // Required until https://github.com/seanmonstar/reqwest/issues/910 is resolved.
 

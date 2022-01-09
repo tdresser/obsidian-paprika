@@ -19,6 +19,7 @@
   },
   "include": [
     "*.ts",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "rust/pkg/*.d.ts"
   ]
 }
