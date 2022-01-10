@@ -1,5 +1,4 @@
-// @ts-ignore
-import uint8array from './rust/pkg/obsidian_paprika_bg.wasm'; 
+import * as foo from './rust/pkg/obsidian_paprika_bg.wasm'; 
 import './rust/pkg/obsidian_paprika';
 
 import { polyfillFetch } from "fetch_polyfill";
