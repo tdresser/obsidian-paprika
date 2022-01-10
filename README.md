@@ -1,6 +1,7 @@
 # TODO
 - Currently playing with hacks for globalThis to expose wasm_bindgen from obsidian_paprika.js.
 - Re-enable tree shaking.
+- Maybe broke esbuild external, excluding node?
 
 # Rust prereqs
 Install rust, or `rustup update`.

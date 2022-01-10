@@ -1,21 +1,15 @@
-/*import { 
-    Recipe, 
-    RecipeEntry, 
-    Category, 
-    RecipeEntryList, 
-    get_recipe_by_id_js, 
-    login_js, 
-    get_recipes_js, 
-    get_categories_js, 
-    get_markdown_js, 
-    get_default_template_js,
-    CategoryList
-} from "./rust/pkg/obsidian_paprika_bg";*/
-
+// @ts-ignore
 import uint8array from './rust/pkg/obsidian_paprika_bg.wasm'; 
 import './rust/pkg/obsidian_paprika';
 
 import { polyfillFetch } from "fetch_polyfill";
+
+type Category = wasm_bindgen.Category;
+const CategoryList = wasm_bindgen.CategoryList;
+type Recipe = wasm_bindgen.Recipe;
+const RecipeEntry = wasm_bindgen.RecipeEntry;
+type RecipeEntry = wasm_bindgen.RecipeEntry;
+type RecipeEntryList = wasm_bindgen.RecipeEntryList;
 
 interface ListInterface<Base> {
     len(): number;
@@ -51,6 +45,7 @@ export class Paprika {
         const { get_default_template_js } = wasm_bindgen;
         console.log(wasm_bindgen)
 
+        console.log("ABOUT TO BINDGEN");
         await wasm_bindgen(uint8array);
 
         console.log("PRE");
@@ -64,32 +59,32 @@ export class Paprika {
     }
         
     async login(email: string, password: string): Promise<string> {
-        return await login_js(email, password);
+        return await wasm_bindgen.login_js(email, password);
     }
 
     async getRecipes(token:string): Promise<RecipeEntry[]> {
-        const recipeEntryList = await get_recipes_js(token) as RecipeEntryList;
+        const recipeEntryList = await wasm_bindgen.get_recipes_js(token) as RecipeEntryList;
         return listToArray(recipeEntryList);
     }
 
     async getCategories(token:string): Promise<Category[]> {
-        const categoryList = await get_categories_js(token);
+        const categoryList = await wasm_bindgen.get_categories_js(token);
         return listToArray(categoryList);
     }
 
     async getMarkdown(recipe:Recipe, template: string, categories: Category[]) : Promise<string> {
         const categoryList = categoryArrayToList(categories);
-        return await get_markdown_js(recipe, template, categoryList);
+        return await wasm_bindgen.get_markdown_js(recipe, template, categoryList);
     }
 
     async getRecipeById(token: string, recipeEntry : RecipeEntry) : Promise<Recipe> {
         console.log("TOKEN: " + token);
         console.log("ENTRY: " + JSON.stringify(recipeEntry));
         console.log(recipeEntry instanceof RecipeEntry);
-        return await get_recipe_by_id_js(token, recipeEntry);
+        return await wasm_bindgen.get_recipe_by_id_js(token, recipeEntry);
     }
 
     getDefaultTemplate() : string {
-        return get_default_template_js()
+        return wasm_bindgen.get_default_template_js()
     }
 }

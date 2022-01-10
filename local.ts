@@ -1,5 +1,4 @@
-// @ts-ignore
-import readline from "node:readline/promises";
+import * as readline from 'node:readline/promises';
 import {Paprika} from "paprika";
 
 async function main() {
@@ -8,7 +7,6 @@ async function main() {
     await paprika.init();
     //console.log(paprika.getDefaultTemplate());
 
-    /*
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
@@ -19,13 +17,13 @@ async function main() {
 
     rl.close();
 
-    const token = await login(email, password);
-    const recipes = await getRecipes(token);
-    const recipe = await getRecipeById(token, recipes[0]);
-    const categories = await getCategories(token);
-    const template = getDefaultTemplate();
+    const token = await paprika.login(email, password);
+    const recipes = await paprika.getRecipes(token);
+    const recipe = await paprika.getRecipeById(token, recipes[0]);
+    const categories = await paprika.getCategories(token);
+    const template = paprika.getDefaultTemplate();
 
-    console.log(await getMarkdown(recipe, template, categories));*/
+    console.log(await paprika.getMarkdown(recipe, template, categories));
 }
 
 main();
