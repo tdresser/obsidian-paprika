@@ -1,20 +1,27 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import {Paprika} from "paprika";
 
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
+interface ObsidianPaprikaSettings {
 	mySetting: string;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: ObsidianPaprikaSettings = {
 	mySetting: 'default'
 }
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class ObsidianPaprika extends Plugin {
+	settings: ObsidianPaprikaSettings;
+	paprika: Paprika;
 
 	async onload() {
+		console.log("Loading Paprika");
 		await this.loadSettings();
+
+		this.paprika = new Paprika();
+		await this.paprika.init();
+		console.log(this.paprika.getDefaultTemplate());
 
 		// This creates an icon in the left ribbon.
 		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
@@ -108,9 +115,9 @@ class SampleModal extends Modal {
 }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: ObsidianPaprika;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: ObsidianPaprika) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}

@@ -4,6 +4,7 @@ import './rust/pkg/obsidian_paprika';
 
 import { polyfillFetch } from "fetch_polyfill";
 
+
 type Category = wasm_bindgen.Category;
 const CategoryList = wasm_bindgen.CategoryList;
 type Recipe = wasm_bindgen.Recipe;
